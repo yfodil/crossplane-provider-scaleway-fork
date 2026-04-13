@@ -150,8 +150,8 @@ spec:
                     type: string
                   passwordSecretRef:
                     description: |-
-                      The password of the MongoDB® user.
-                      MongoDB user password
+                      The password of the MongoDB® user. Only one of password or password_wo should be specified.
+                      MongoDB user password. Only one of `password` or `password_wo` should be specified.
                     properties:
                       key:
                         type: string
@@ -162,6 +162,16 @@ spec:
                     - key
                     - name
                     type: object
+                  passwordWo:
+                    description: |-
+                      The password of the MongoDB® user in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version.
+                      MongoDB user password in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
+                    type: string
+                  passwordWoVersion:
+                    description: |-
+                      The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
+                      The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
+                    type: number
                   region:
                     description: |-
                       (Defaults to provider region) The region in which the MongoDB® user should be created.
@@ -296,8 +306,8 @@ spec:
                     type: string
                   passwordSecretRef:
                     description: |-
-                      The password of the MongoDB® user.
-                      MongoDB user password
+                      The password of the MongoDB® user. Only one of password or password_wo should be specified.
+                      MongoDB user password. Only one of `password` or `password_wo` should be specified.
                     properties:
                       key:
                         type: string
@@ -308,6 +318,16 @@ spec:
                     - key
                     - name
                     type: object
+                  passwordWo:
+                    description: |-
+                      The password of the MongoDB® user in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version.
+                      MongoDB user password in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
+                    type: string
+                  passwordWoVersion:
+                    description: |-
+                      The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
+                      The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
+                    type: number
                   region:
                     description: |-
                       (Defaults to provider region) The region in which the MongoDB® user should be created.
@@ -336,8 +356,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                required:
-                - passwordSecretRef
                 type: object
               managementPolicies:
                 default:
@@ -402,9 +420,6 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
                 || (has(self.initProvider) && has(self.initProvider.name))'
-            - message: spec.forProvider.passwordSecretRef is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)'
           status:
             description: UserStatus defines the observed state of User.
             properties:
@@ -423,6 +438,16 @@ spec:
                       The name of the MongoDB® user.
                       MongoDB user name
                     type: string
+                  passwordWo:
+                    description: |-
+                      The password of the MongoDB® user in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version.
+                      MongoDB user password in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
+                    type: string
+                  passwordWoVersion:
+                    description: |-
+                      The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
+                      The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
+                    type: number
                   region:
                     description: |-
                       (Defaults to provider region) The region in which the MongoDB® user should be created.
