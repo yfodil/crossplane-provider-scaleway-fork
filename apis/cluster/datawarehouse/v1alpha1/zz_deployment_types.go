@@ -15,11 +15,11 @@ import (
 
 type DeploymentInitParameters struct {
 
-	// Maximum CPU count. Must be greater than or equal to cpu_min.
+	// Maximum CPU count (autoscaling upper bound). Must be greater than or equal to cpu_min. Can be updated in place.
 	// Maximum CPU count
 	CPUMax *float64 `json:"cpuMax,omitempty" tf:"cpu_max,omitempty"`
 
-	// Minimum CPU count. Must be less than or equal to cpu_max.
+	// Minimum CPU count (autoscaling lower bound). Must be less than or equal to cpu_max. Can be updated in place.
 	// Minimum CPU count
 	CPUMin *float64 `json:"cpuMin,omitempty" tf:"cpu_min,omitempty"`
 
@@ -27,9 +27,21 @@ type DeploymentInitParameters struct {
 	// Name of the Datawarehouse deployment
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Password for the first user of the deployment. If not specified, a random password will be generated. Note: password is only used during deployment creation.
-	// Password for the first user of the deployment
+	// Password for the first user of the deployment. If not specified, a random password will be generated. Only one of password or password_wo should be specified. Note: plain password is only used during deployment creation; it is not rotated on update.
+	// Password for the first user of the deployment. Only one of `password` or `password_wo` should be specified.
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Password for the first user of the deployment in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version. Updates are applied via the Users API to the initial user (an administrator when present, otherwise the first user by name).
+	// Password for the first user of the deployment in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`. When updating, the password is rotated via the Data Warehouse Users API (the initial user is selected as an admin user when present, otherwise the first user by name).
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
+	// The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// Private network configuration to expose your deployment. Changing this forces recreation of the deployment.
+	// Private network to expose your datawarehouse deployment
+	PrivateNetwork []PrivateNetworkInitParameters `json:"privateNetwork,omitempty" tf:"private_network,omitempty"`
 
 	// (Defaults to provider project_id) The ID of the project the deployment is associated with.
 	// The project_id you want to attach the resource to
@@ -43,9 +55,13 @@ type DeploymentInitParameters struct {
 	// The region you want to attach the resource to
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
-	// Number of replicas.
+	// Number of replicas. Can be updated in place via the deployment configuration API.
 	// Number of replicas
 	ReplicaCount *float64 `json:"replicaCount,omitempty" tf:"replica_count,omitempty"`
+
+	// Whether the deployment should be running. When set to false, the provider calls the Stop deployment API after create or update; when set to true, it calls Start deployment if the deployment is stopped. Scaling fields (replica_count, cpu_min, cpu_max) require the deployment to be running; if it is stopped, the provider starts it to apply the change, then stops it again when started is false.
+	// Whether the deployment should be running (`true`) or stopped (`false`). Maps to the Start deployment and Stop deployment API actions.
+	Started *bool `json:"started,omitempty" tf:"started,omitempty"`
 
 	// List of tags to apply to the deployment.
 	// List of tags to apply
@@ -58,11 +74,11 @@ type DeploymentInitParameters struct {
 
 type DeploymentObservation struct {
 
-	// Maximum CPU count. Must be greater than or equal to cpu_min.
+	// Maximum CPU count (autoscaling upper bound). Must be greater than or equal to cpu_min. Can be updated in place.
 	// Maximum CPU count
 	CPUMax *float64 `json:"cpuMax,omitempty" tf:"cpu_max,omitempty"`
 
-	// Minimum CPU count. Must be less than or equal to cpu_max.
+	// Minimum CPU count (autoscaling lower bound). Must be less than or equal to cpu_max. Can be updated in place.
 	// Minimum CPU count
 	CPUMin *float64 `json:"cpuMin,omitempty" tf:"cpu_min,omitempty"`
 
@@ -76,6 +92,18 @@ type DeploymentObservation struct {
 	// Name of the Data Warehouse deployment.
 	// Name of the Datawarehouse deployment
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Password for the first user of the deployment in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version. Updates are applied via the Users API to the initial user (an administrator when present, otherwise the first user by name).
+	// Password for the first user of the deployment in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`. When updating, the password is rotated via the Data Warehouse Users API (the initial user is selected as an admin user when present, otherwise the first user by name).
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
+	// The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// Private network configuration to expose your deployment. Changing this forces recreation of the deployment.
+	// Private network to expose your datawarehouse deployment
+	PrivateNetwork []PrivateNetworkObservation `json:"privateNetwork,omitempty" tf:"private_network,omitempty"`
 
 	// (Defaults to provider project_id) The ID of the project the deployment is associated with.
 	// The project_id you want to attach the resource to
@@ -93,9 +121,13 @@ type DeploymentObservation struct {
 	// The region you want to attach the resource to
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
-	// Number of replicas.
+	// Number of replicas. Can be updated in place via the deployment configuration API.
 	// Number of replicas
 	ReplicaCount *float64 `json:"replicaCount,omitempty" tf:"replica_count,omitempty"`
+
+	// Whether the deployment should be running. When set to false, the provider calls the Stop deployment API after create or update; when set to true, it calls Start deployment if the deployment is stopped. Scaling fields (replica_count, cpu_min, cpu_max) require the deployment to be running; if it is stopped, the provider starts it to apply the change, then stops it again when started is false.
+	// Whether the deployment should be running (`true`) or stopped (`false`). Maps to the Start deployment and Stop deployment API actions.
+	Started *bool `json:"started,omitempty" tf:"started,omitempty"`
 
 	// The status of the deployment (e.g., "ready", "provisioning").
 	// The status of the deployment
@@ -116,12 +148,12 @@ type DeploymentObservation struct {
 
 type DeploymentParameters struct {
 
-	// Maximum CPU count. Must be greater than or equal to cpu_min.
+	// Maximum CPU count (autoscaling upper bound). Must be greater than or equal to cpu_min. Can be updated in place.
 	// Maximum CPU count
 	// +kubebuilder:validation:Optional
 	CPUMax *float64 `json:"cpuMax,omitempty" tf:"cpu_max,omitempty"`
 
-	// Minimum CPU count. Must be less than or equal to cpu_max.
+	// Minimum CPU count (autoscaling lower bound). Must be less than or equal to cpu_max. Can be updated in place.
 	// Minimum CPU count
 	// +kubebuilder:validation:Optional
 	CPUMin *float64 `json:"cpuMin,omitempty" tf:"cpu_min,omitempty"`
@@ -131,10 +163,25 @@ type DeploymentParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Password for the first user of the deployment. If not specified, a random password will be generated. Note: password is only used during deployment creation.
-	// Password for the first user of the deployment
+	// Password for the first user of the deployment. If not specified, a random password will be generated. Only one of password or password_wo should be specified. Note: plain password is only used during deployment creation; it is not rotated on update.
+	// Password for the first user of the deployment. Only one of `password` or `password_wo` should be specified.
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Password for the first user of the deployment in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version. Updates are applied via the Users API to the initial user (an administrator when present, otherwise the first user by name).
+	// Password for the first user of the deployment in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`. When updating, the password is rotated via the Data Warehouse Users API (the initial user is selected as an admin user when present, otherwise the first user by name).
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
+	// The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// Private network configuration to expose your deployment. Changing this forces recreation of the deployment.
+	// Private network to expose your datawarehouse deployment
+	// +kubebuilder:validation:Optional
+	PrivateNetwork []PrivateNetworkParameters `json:"privateNetwork,omitempty" tf:"private_network,omitempty"`
 
 	// (Defaults to provider project_id) The ID of the project the deployment is associated with.
 	// The project_id you want to attach the resource to
@@ -151,10 +198,15 @@ type DeploymentParameters struct {
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
-	// Number of replicas.
+	// Number of replicas. Can be updated in place via the deployment configuration API.
 	// Number of replicas
 	// +kubebuilder:validation:Optional
 	ReplicaCount *float64 `json:"replicaCount,omitempty" tf:"replica_count,omitempty"`
+
+	// Whether the deployment should be running. When set to false, the provider calls the Stop deployment API after create or update; when set to true, it calls Start deployment if the deployment is stopped. Scaling fields (replica_count, cpu_min, cpu_max) require the deployment to be running; if it is stopped, the provider starts it to apply the change, then stops it again when started is false.
+	// Whether the deployment should be running (`true`) or stopped (`false`). Maps to the Start deployment and Stop deployment API actions.
+	// +kubebuilder:validation:Optional
+	Started *bool `json:"started,omitempty" tf:"started,omitempty"`
 
 	// List of tags to apply to the deployment.
 	// List of tags to apply
@@ -165,6 +217,40 @@ type DeploymentParameters struct {
 	// ClickHouse version to use
 	// +kubebuilder:validation:Optional
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+}
+
+type PrivateNetworkInitParameters struct {
+
+	// The ID of the private network. Format: {region}/{id} or just {id}.
+	// The private network ID
+	PnID *string `json:"pnId,omitempty" tf:"pn_id,omitempty"`
+}
+
+type PrivateNetworkObservation struct {
+
+	// DNS record for the public endpoint.
+	// DNS record for the private endpoint
+	DNSRecord *string `json:"dnsRecord,omitempty" tf:"dns_record,omitempty"`
+
+	// The ID of the deployment.
+	// The endpoint ID
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the private network. Format: {region}/{id} or just {id}.
+	// The private network ID
+	PnID *string `json:"pnId,omitempty" tf:"pn_id,omitempty"`
+
+	// List of services exposed on the public endpoint.
+	// List of services exposed on the private endpoint
+	Services []ServicesObservation `json:"services,omitempty" tf:"services,omitempty"`
+}
+
+type PrivateNetworkParameters struct {
+
+	// The ID of the private network. Format: {region}/{id} or just {id}.
+	// The private network ID
+	// +kubebuilder:validation:Optional
+	PnID *string `json:"pnId" tf:"pn_id,omitempty"`
 }
 
 type PublicNetworkInitParameters struct {
@@ -179,10 +265,25 @@ type PublicNetworkObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// List of services exposed on the public endpoint.
-	Services []ServicesObservation `json:"services,omitempty" tf:"services,omitempty"`
+	Services []PublicNetworkServicesObservation `json:"services,omitempty" tf:"services,omitempty"`
 }
 
 type PublicNetworkParameters struct {
+}
+
+type PublicNetworkServicesInitParameters struct {
+}
+
+type PublicNetworkServicesObservation struct {
+
+	// TCP port number.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// Service protocol (e.g., "tcp", "https", "mysql").
+	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
+}
+
+type PublicNetworkServicesParameters struct {
 }
 
 type ServicesInitParameters struct {

@@ -71,9 +71,8 @@ spec:
                           type: string
                         ip:
                           description: |-
-                            The IP range to whitelist
-                            in CIDR notation
-                            IPv4 network address of the rule (IP network in a CIDR format).
+                            The IPv4 address or range to whitelist in CIDR notation. IPv6 is not supported by the Scaleway API.
+                            IPv4 network address of the rule in CIDR notation (IPv6 is not supported by the Scaleway API).
                           type: string
                       type: object
                     type: array
@@ -109,12 +108,12 @@ spec:
                   passwordWo:
                     description: |-
                       Password for the first user of the Redis™ cluster in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version.
-                      Password of the user in [write-only](https://developer.hashicorp. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
+                      Password of the user in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
                     type: string
                   passwordWoVersion:
                     description: |-
                       The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
-                      The version of the [write-only](https://developer.hashicorp. To update the `password_wo`, you must also update the `password_wo_version`.
+                      The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
                     type: number
                   privateIps:
                     description: |-
@@ -137,12 +136,12 @@ spec:
                           type: string
                         serviceIps:
                           description: |-
-                            Endpoint IPv4 addresses in CIDR notation. You must provide at least one IP per node.
+                            Endpoint IPv4 addresses in CIDR notation (IPv6 is not supported by the Scaleway API). You must provide at least one IP per node.
                             Keep in mind that in cluster mode you cannot edit your Private Network after its creation so if you want to be able to
                             scale your cluster horizontally (adding nodes) later, you should provide more IPs than nodes.
                             If not set, the IP network address within the private subnet is determined by the IP Address Management (IPAM) service.
                             ~> Important: When IPAM is enabled, the IPs specified here will be ignored and should not be provided.
-                            List of IPv4 addresses of the private network with a CIDR notation
+                            List of IPv4 addresses of the private network in CIDR notation (IPv6 is not supported by the Scaleway API)
                           items:
                             type: string
                           type: array
@@ -244,9 +243,8 @@ spec:
                           type: string
                         ip:
                           description: |-
-                            The IP range to whitelist
-                            in CIDR notation
-                            IPv4 network address of the rule (IP network in a CIDR format).
+                            The IPv4 address or range to whitelist in CIDR notation. IPv6 is not supported by the Scaleway API.
+                            IPv4 network address of the rule in CIDR notation (IPv6 is not supported by the Scaleway API).
                           type: string
                       type: object
                     type: array
@@ -282,12 +280,12 @@ spec:
                   passwordWo:
                     description: |-
                       Password for the first user of the Redis™ cluster in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version.
-                      Password of the user in [write-only](https://developer.hashicorp. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
+                      Password of the user in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
                     type: string
                   passwordWoVersion:
                     description: |-
                       The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
-                      The version of the [write-only](https://developer.hashicorp. To update the `password_wo`, you must also update the `password_wo_version`.
+                      The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
                     type: number
                   privateIps:
                     description: |-
@@ -310,12 +308,12 @@ spec:
                           type: string
                         serviceIps:
                           description: |-
-                            Endpoint IPv4 addresses in CIDR notation. You must provide at least one IP per node.
+                            Endpoint IPv4 addresses in CIDR notation (IPv6 is not supported by the Scaleway API). You must provide at least one IP per node.
                             Keep in mind that in cluster mode you cannot edit your Private Network after its creation so if you want to be able to
                             scale your cluster horizontally (adding nodes) later, you should provide more IPs than nodes.
                             If not set, the IP network address within the private subnet is determined by the IP Address Management (IPAM) service.
                             ~> Important: When IPAM is enabled, the IPs specified here will be ignored and should not be provided.
-                            List of IPv4 addresses of the private network with a CIDR notation
+                            List of IPv4 addresses of the private network in CIDR notation (IPv6 is not supported by the Scaleway API)
                           items:
                             type: string
                           type: array
@@ -485,9 +483,8 @@ spec:
                           type: string
                         ip:
                           description: |-
-                            The IP range to whitelist
-                            in CIDR notation
-                            IPv4 network address of the rule (IP network in a CIDR format).
+                            The IPv4 address or range to whitelist in CIDR notation. IPv6 is not supported by the Scaleway API.
+                            IPv4 network address of the rule in CIDR notation (IPv6 is not supported by the Scaleway API).
                           type: string
                       type: object
                     type: array
@@ -522,12 +519,12 @@ spec:
                   passwordWo:
                     description: |-
                       Password for the first user of the Redis™ cluster in write-only mode. Only one of password or password_wo should be specified. To update the password_wo, you must also update the password_wo_version.
-                      Password of the user in [write-only](https://developer.hashicorp. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
+                      Password of the user in [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) mode. Only one of `password` or `password_wo` should be specified. To update the `password_wo`, you must also update the `password_wo_version`.
                     type: string
                   passwordWoVersion:
                     description: |-
                       The version of the write-only password. To update the password_wo, you must also update the password_wo_version.
-                      The version of the [write-only](https://developer.hashicorp. To update the `password_wo`, you must also update the `password_wo_version`.
+                      The version of the [write-only](https://registry.io/providers/scaleway/scaleway/latest/docs/guides/using-write-only-arguments) password. To update the `password_wo`, you must also update the `password_wo_version`.
                     type: number
                   privateIps:
                     description: |-
@@ -578,12 +575,12 @@ spec:
                           type: number
                         serviceIps:
                           description: |-
-                            Endpoint IPv4 addresses in CIDR notation. You must provide at least one IP per node.
+                            Endpoint IPv4 addresses in CIDR notation (IPv6 is not supported by the Scaleway API). You must provide at least one IP per node.
                             Keep in mind that in cluster mode you cannot edit your Private Network after its creation so if you want to be able to
                             scale your cluster horizontally (adding nodes) later, you should provide more IPs than nodes.
                             If not set, the IP network address within the private subnet is determined by the IP Address Management (IPAM) service.
                             ~> Important: When IPAM is enabled, the IPs specified here will be ignored and should not be provided.
-                            List of IPv4 addresses of the private network with a CIDR notation
+                            List of IPv4 addresses of the private network in CIDR notation (IPv6 is not supported by the Scaleway API)
                           items:
                             type: string
                           type: array

@@ -452,6 +452,16 @@ func (in *DatabaseBackupObservation) DeepCopyInto(out *DatabaseBackupObservation
 		*out = new(string)
 		**out = **in
 	}
+	if in.DownloadURL != nil {
+		in, out := &in.DownloadURL, &out.DownloadURL
+		*out = new(string)
+		**out = **in
+	}
+	if in.DownloadURLExpiresAt != nil {
+		in, out := &in.DownloadURLExpiresAt, &out.DownloadURLExpiresAt
+		*out = new(string)
+		**out = **in
+	}
 	if in.ExpiresAt != nil {
 		in, out := &in.ExpiresAt, &out.ExpiresAt
 		*out = new(string)
@@ -482,9 +492,19 @@ func (in *DatabaseBackupObservation) DeepCopyInto(out *DatabaseBackupObservation
 		*out = new(string)
 		**out = **in
 	}
+	if in.SameRegion != nil {
+		in, out := &in.SameRegion, &out.SameRegion
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Size != nil {
 		in, out := &in.Size, &out.Size
 		*out = new(float64)
+		**out = **in
+	}
+	if in.Status != nil {
+		in, out := &in.Status, &out.Status
+		*out = new(string)
 		**out = **in
 	}
 	if in.UpdatedAt != nil {
@@ -2045,6 +2065,11 @@ func (in *PrivilegeObservation) DeepCopyInto(out *PrivilegeObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.EffectivePermission != nil {
+		in, out := &in.EffectivePermission, &out.EffectivePermission
+		*out = new(string)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
@@ -2057,6 +2082,11 @@ func (in *PrivilegeObservation) DeepCopyInto(out *PrivilegeObservation) {
 	}
 	if in.Permission != nil {
 		in, out := &in.Permission, &out.Permission
+		*out = new(string)
+		**out = **in
+	}
+	if in.PermissionStatus != nil {
+		in, out := &in.PermissionStatus, &out.PermissionStatus
 		*out = new(string)
 		**out = **in
 	}
